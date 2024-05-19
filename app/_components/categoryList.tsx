@@ -5,7 +5,7 @@ import CategoryItem from "./categoryItem";
 const CategoryList = async () => {
   const categories = await db.category.findMany();
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-3">
       {categories.map((item) => (
         <CategoryItem key={item.id} item={item} />
       ))}
