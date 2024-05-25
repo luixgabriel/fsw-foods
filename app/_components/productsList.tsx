@@ -1,19 +1,20 @@
 import React from "react";
-import { db } from "../_lib/prisma";
 import ProductItem from "./productItem";
-import { Product } from "@prisma/client";
-
-const ProductsList = async () => {
-  const products = await db.product.findMany({
-    where: {
-      discountPercentage: {
-        gt: 0,
-      },
-    },
-  });
+import { Prisma, Product } from "@prisma/client";
+interface ProductListProps {
+  products: Prisma.ProductGetPayload<{
+    include: {
+      restaurant: {
+        select: {
+          name: true;
+        };
+      };
+    };
+  }>[];
+}
+const ProductsList = async ({ products }: ProductListProps) => {
   return (
-    <div>
-      <h1>Products List</h1>
+    <div className="flex h-[300px] gap-3 overflow-x-scroll px-5 [&::-webkit-scrollbar]:hidden">
       {products.map((item: Product) => (
         <ProductItem key={item.id} product={item} />
       ))}
